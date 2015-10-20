@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 	cout << "是否有啁啾，数字0没有，数字1有：";
 	cin >> IF_Chirp;
 	double eta = 6.25;
-	double tao = 120;
+	double tao = 120.0;
 	double chirp_phase;
 
 	///matter parameters///
@@ -104,7 +104,7 @@ int main(int argc, char* argv[])
 	double t = tstart;						//表征脉冲时刻
 	for (i = 0; i < (NT-1); i++){
 		if (IF_Chirp == 0){
-			chirp_phase = 0;
+			chirp_phase = 0.0;
 		}
 		else{
 			chirp_phase = -eta*tanh(t / tao);
@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
 			}	
 		}
 		else if (laserchoice==1){
-			laser_field[i] = -rabbi_0 / mu*exp(-4 * log(2)*t*t / dur / dur)*cos(omega_L*t + chirp_phase);	//高斯型激光场
+			laser_field[i] = -rabbi_0 / mu*exp(-4.0 * log(2.0)*t*t / dur / dur)*cos(omega_L*t + chirp_phase);	//高斯型激光场
 			rabbi_mid[i] = rabbi_0*exp(-4 * log(2)*(t + h / 2.0)*(t + h / 2.0) / dur / dur)*cos(omega_L*(t + h / 2.0)
 						+ chirp_phase);
 		}
