@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 	long NT=NN+1;					//整个脉冲积分总步长数，包括起始点
 	double h=T/double(N);			//积分步长
 	double half_h = h / 2.0;
-	double tstart = 0;
+	double tstart = -cycles / 2.0 * T;
 	int IF_Chirp;
 	cout << "是否有啁啾，数字0没有，数字1有：";
 	cin >> IF_Chirp;
@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
 		}
 		rabbi[i] = -mu*laser_field[i];
 		rabbi_tmp=rabbi[i];
-		time_output<<t/T<<endl;
+		time_output<<t<<endl;
 		lasersource_output<<laser_field[i]<<endl;
 
 		derivs(t, y, dydx);
@@ -172,17 +172,15 @@ int main(int argc, char* argv[])
 //	ofstream dipole("res\\dipole.txt");
 	double dipole_tmp1,dipole_tmp2;
 	for (i = 0; i < (NT-1); i++){
-/*		dipole_tmp1 = mu*yy[0][i] + mu_11*(1.0 - yy[2][i]) / 2.0 + mu_22*(1.0 + yy[2][i]) / 2.0; //偶极矩的计算加入固有偶极矩
+		dipole_tmp1 = mu*yy[0][i] + mu_11*(1.0 - yy[2][i]) / 2.0 + mu_22*(1.0 + yy[2][i]) / 2.0; //偶极矩的计算加入固有偶极矩
 		dipole_tmp2 = mu*yy[0][i];
 		dipole<<dipole_tmp1<<" "<<dipole_tmp2<<endl;
-		*/
-		dipole << yy[0][i] << " " << yy[1][i] << " " << yy[2][i] << endl;
 	}
 	dipole.close();	
 }
 
 void derivs(const Doub x, VecDoub_I &y, VecDoub_O &dydx) {
-	dydx[0] =  y[1];
-	dydx[1] = -y[0];
-	dydx[2] = -y[2];
+	dydx[0] = -omega_0*y[1] - 2.0*xi*rabbi_tmp * y[1];
+	dydx[1] = omega_0*y[0] + 2.0*xi*rabbi_tmp * y[0] - 2.0*rabbi_tmp * y[2];
+	dydx[2] = 2.0*rabbi_tmp * y[1];
 }
